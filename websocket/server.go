@@ -17,7 +17,7 @@ type Server struct {
 }
 
 func NewServer(w http.ResponseWriter, r *http.Request, callback transport.Callback) (transport.Server, error) {
-	u := websocket.Upgrader{ReadBufferSize: 10240, WriteBufferSize: 10240}
+	u := websocket.Upgrader{ReadBufferSize: 10240, WriteBufferSize: 10240, EnableCompression: true}
 	u.Error = func(w http.ResponseWriter, r *http.Request, status int, reason error) {
 		// don't return errors to maintain backwards compatibility
 	}
