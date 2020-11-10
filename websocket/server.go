@@ -5,9 +5,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/googollee/go-engine.io/message"
-	"github.com/googollee/go-engine.io/parser"
-	"github.com/googollee/go-engine.io/transport"
+	"github.com/KevinWu0904/go-engine.io/message"
+	"github.com/KevinWu0904/go-engine.io/parser"
+	"github.com/KevinWu0904/go-engine.io/transport"
 	"github.com/gorilla/websocket"
 )
 
@@ -17,7 +17,16 @@ type Server struct {
 }
 
 func NewServer(w http.ResponseWriter, r *http.Request, callback transport.Callback) (transport.Server, error) {
-	conn, err := websocket.Upgrade(w, r, nil, 10240, 10240)
+	u := websocket.Upgrader{ReadBufferSize: 10240, WriteBufferSize: 10240}
+	u.Error = func(w http.ResponseWriter, r *http.Request, status int, reason error) {
+		// don't return errors to maintain backwards compatibility
+	}
+	u.CheckOrigin = func(r *http.Request) bool {
+		// allow all connections by default
+		return true
+	}
+
+	conn, err := u.Upgrade(w, r, nil)
 	if err != nil {
 		return nil, err
 	}

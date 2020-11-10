@@ -1,4 +1,6 @@
-module github.com/googollee/go-engine.io
+module github.com/KevinWu0904/go-engine.io
+
+go 1.14
 
 require (
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
